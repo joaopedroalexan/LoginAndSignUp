@@ -7,6 +7,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
+import api from "../axios/axios";
 
 function Login() {
   const [user, setUser] = useState({
@@ -21,9 +22,21 @@ function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert("email: " + user.email + "" + "Senha" + user.password);
+    login();
   };
-  //   const [Count, setCount] = useState(0)
+
+  async function login() {
+    await api.postLogin(user).then(
+      (response) => {
+        alert(response.data.message);
+      },
+      (error) => {
+        console.log(error);
+        alert(error.response.data.error);
+      }
+    );
+  }
+
   return (
     <Container component="main" maxWidth="xl">
       <Box
@@ -61,7 +74,7 @@ function Login() {
             fullWidth
             id="password"
             label="Password"
-            name="senha"
+            name="password"
             margin="normal"
             type="password"
             value={user.Age}
@@ -81,4 +94,5 @@ function Login() {
     </Container>
   );
 }
+
 export default Login;
